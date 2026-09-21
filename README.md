@@ -98,9 +98,11 @@ Runs end-to-end on Kaggle unchanged (auto-detects the environment) or locally wi
 
 ## Model weights
 
-Trained weights (`.pt`/`.pth`) and ONNX exports aren't committed to this repo — several individual files exceed GitHub's 100MB limit. They're hosted here instead:
+Trained weights (`.pt`/`.pth`) and ONNX exports aren't committed to this repo — several individual files exceed GitHub's 100MB limit. All 6 models, in both formats, are attached to the **[v1.0-models release](https://github.com/kvsabhiram/roadsentinel/releases/tag/v1.0-models)** instead.
 
-**[→ Google Drive: models, ONNX exports, full results, test cases](#)** *(add your Drive link here)*
+To run the demo app: download the `.pt`/`.pth` files from that release and place them in `demo_app/weights/`.
+
+Full result set (all test cases, sample images, annotated videos) is also available on **[Google Drive](#)** *(add your Drive link here)*.
 
 ## Project structure
 
@@ -111,6 +113,9 @@ road-damage-detection-30-epochs.ipynb   the complete pipeline: dataset dedup +
 demo_app/
   app.py                                Gradio demo (image + video)
   requirements.txt
+results/                                leaderboard, ensemble comparison, final
+                                         test evaluation, ONNX validation -- the
+                                         raw numbers behind the table above
 promt.txt                               original project brief / requirements
 requirements.txt                        training environment dependencies
 ```

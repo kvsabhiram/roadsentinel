@@ -1,0 +1,9 @@
+[
+  {
+    "model": "RF-DETR",
+    "onnx_path": "/home/test/Documents/p_todozee/local_run/working/road_hazard_experiment/deployment_weights/RF-DETR/rfdetr-medium.onnx",
+    "before": null,
+    "after": null,
+    "note": "RF-DETR ONNX accuracy validation not automated in this notebook"
+  }
+]

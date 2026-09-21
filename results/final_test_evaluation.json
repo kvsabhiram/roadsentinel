@@ -1,0 +1,53 @@
+{
+  "best_model": "RF-DETR",
+  "test_metrics": {
+    "mAP50": 0.8847648501396179,
+    "mAP50-95": 0.4911389946937561,
+    "Precision": 0.9258005023002625,
+    "Recall": 0.80452561378479
+  },
+  "video_predictions": [
+    {
+      "input": "/home/test/Documents/p_todozee/local_run/input/datasets/sabidrahman/pothole-cracks-and-openmanhole/dataset/dataset/test/video/testvideo1.mp4",
+      "output_path": "/home/test/Documents/p_todozee/local_run/working/road_hazard_experiment/video_predictions/testvideo1_predicted.mp4",
+      "frames": 692,
+      "detections": 3879
+    },
+    {
+      "input": "/home/test/Documents/p_todozee/local_run/input/datasets/sabidrahman/pothole-cracks-and-openmanhole/dataset/dataset/test/video/testvideo2.mp4",
+      "output_path": "/home/test/Documents/p_todozee/local_run/working/road_hazard_experiment/video_predictions/testvideo2_predicted.mp4",
+      "frames": 692,
+      "detections": 1172
+    },
+    {
+      "input": "/home/test/Documents/p_todozee/local_run/input/datasets/sabidrahman/pothole-cracks-and-openmanhole/dataset/dataset/test/video/testvideo3.mp4",
+      "output_path": "/home/test/Documents/p_todozee/local_run/working/road_hazard_experiment/video_predictions/testvideo3_predicted.mp4",
+      "frames": 432,
+      "detections": 861
+    },
+    {
+      "input": "/home/test/Documents/p_todozee/local_run/input/datasets/sabidrahman/pothole-cracks-and-openmanhole/dataset/dataset/test/video/testvideo4.mp4",
+      "output_path": "/home/test/Documents/p_todozee/local_run/working/road_hazard_experiment/video_predictions/testvideo4_predicted.mp4",
+      "frames": 420,
+      "detections": 180
+    },
+    {
+      "input": "/home/test/Documents/p_todozee/local_run/input/datasets/sabidrahman/pothole-cracks-and-openmanhole/dataset/dataset/test/video/testvideo5.mp4",
+      "output_path": "/home/test/Documents/p_todozee/local_run/working/road_hazard_experiment/video_predictions/testvideo5_predicted.mp4",
+      "frames": 219,
+      "detections": 190
+    },
+    {
+      "input": "/home/test/Documents/p_todozee/local_run/input/datasets/sabidrahman/pothole-cracks-and-openmanhole/dataset/dataset/test/video/testvideo6.mp4",
+      "output_path": "/home/test/Documents/p_todozee/local_run/working/road_hazard_experiment/video_predictions/testvideo6_predicted.mp4",
+      "frames": 301,
+      "detections": 861
+    },
+    {
+      "input": "/home/test/Documents/p_todozee/local_run/input/datasets/sabidrahman/pothole-cracks-and-openmanhole/dataset/dataset/test/video/testvideo7.mp4",
+      "output_path": "/home/test/Documents/p_todozee/local_run/working/road_hazard_experiment/video_predictions/testvideo7_predicted.mp4",
+      "frames": 651,
+      "detections": 653
+    }
+  ]
+}
