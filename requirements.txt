@@ -1,0 +1,34 @@
+# Road damage detection - pinned dependencies for local execution.
+#
+# torch/torchvision/torchaudio need the CUDA 12.1 wheel index (they are not
+# on plain PyPI); install those three first with:
+#   pip install torch==2.5.1+cu121 torchvision==0.20.1+cu121 torchaudio==2.5.1+cu121 \
+#     --index-url https://download.pytorch.org/whl/cu121
+# then install the rest of this file. On Kaggle, skip this file entirely --
+# Cell 1 of the notebook installs ultralytics itself and Kaggle already
+# ships a working torch+CUDA stack.
+
+ultralytics==8.3.141
+rfdetr[train,loggers]==1.10.0
+supervision==0.30.2
+pycocotools==2.0.10
+ensemble-boxes==1.0.9
+onnxruntime-gpu==1.18.0
+
+numpy==1.26.4
+pandas==2.3.3
+matplotlib==3.8.0
+pillow==11.3.0
+PyYAML==6.0.3
+opencv-python-headless==4.11.0.86
+
+# Notebook execution (only needed to run/edit the .ipynb locally)
+jupyter_client==8.6.3
+nbclient==0.10.2
+nbconvert==7.16.6
+nbformat==5.10.4
+ipykernel==7.3.0
+ipywidgets==8.1.9
+
+# Anonymous Kaggle dataset download (no API credentials needed for public datasets)
+kagglehub==1.0.2

@@ -1,0 +1,25 @@
+# Virtual environment
+.venv/
+__pycache__/
+*.pyc
+
+# Large generated artifacts -- weights, ONNX exports, videos, and the full
+# working directory are hosted separately (Google Drive / GitHub Releases),
+# not committed here. Several individual files exceed GitHub's 100MB
+# per-file limit (RF-DETR.pth, RT-DETR-L.onnx), so this isn't optional.
+local_run/
+deliverables/
+handoff_road_damage_detection/
+demo_app/weights/
+*.pt
+*.pth
+*.onnx
+*.mp4
+*.avi
+*.mov
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# OS cruft
+.DS_Store

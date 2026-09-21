@@ -1,0 +1,814 @@
+# Road Damage Detection — Complete Project Task
+
+You are working on an existing Kaggle-based computer vision project for **road damage detection**.
+
+I am new to this project, so before making changes, first understand the existing notebook and preserve its working functionality. Do not assume that existing results are correct without checking the code and outputs.
+
+The existing notebook is:
+
+`road-damage-detection-30-epochs.ipynb`
+
+The objective is to turn the existing baseline into a stronger and more complete road-damage detection system.
+
+---
+
+# 1. EXISTING PROJECT
+
+The current notebook is a Kaggle notebook for road-damage object detection.
+
+The existing classes are:
+
+1. Pothole
+2. Crack
+3. Open Manhole
+
+The current notebook already discovers the dataset from `/kaggle/input` and expects YOLO-format annotations.
+
+The notebook already has:
+
+* Train split
+* Validation split
+* Test split, if available
+* Dataset validation
+* Ground-truth visualization
+* Class-distribution visualization
+* Image metadata analysis
+* Model training
+* Validation
+* mAP evaluation
+* Confusion matrix / PR curves / results visualization
+* Test-set evaluation
+* Image prediction
+* Video prediction
+* ONNX export
+* ZIP packaging of deployment weights
+
+Do not unnecessarily rewrite working parts.
+
+---
+
+# 2. DATASET
+
+First identify and clearly document the exact dataset being used by the notebook.
+
+The project owner should provide/confirm the **Kaggle dataset link**.
+
+Before training, inspect:
+
+* Dataset name
+* Dataset source
+* Dataset URL if available
+* Number of images
+* Number of annotations
+* Number of classes
+* Class distribution
+* Image dimensions
+* Train/validation/test counts
+* Annotation format
+* Whether all splits contain labels
+* Whether there are duplicate images
+* Whether there are corrupted images
+* Whether there are missing labels
+* Whether class IDs are consistent
+
+Do not invent a dataset URL.
+
+If the dataset URL cannot be determined from the notebook, clearly mark it as:
+
+`DATASET LINK: TO BE CONFIRMED`
+
+---
+
+# 3. DATASET SPLIT
+
+The existing notebook already separates:
+
+* Train
+* Validation
+* Test
+
+Preserve the existing split unless there is a strong technical reason to change it.
+
+Use the splits correctly:
+
+### Train
+
+Used for model training.
+
+### Validation
+
+Used during development for:
+
+* Hyperparameter tuning
+* Model comparison
+* Selecting the best checkpoint
+* Comparing augmentation strategies
+* Comparing ensemble strategies
+* Selecting confidence thresholds
+
+### Test
+
+The test set must remain untouched during model development.
+
+Use it only for the final evaluation of the selected model/ensemble.
+
+This is important because repeatedly tuning against the test set would cause test-set leakage.
+
+All models must ideally use the **same train/validation/test split** so that comparisons are fair.
+
+---
+
+# 4. CURRENT BASELINE MODELS
+
+The existing notebook already contains these models:
+
+* YOLO11m
+* RT-DETR-L
+* YOLOv9c
+* YOLOv10m
+* YOLOv8m
+
+RT-DETR is already part of the sample project.
+
+Therefore:
+
+**DO NOT REMOVE RT-DETR.**
+
+RT-DETR must remain in the model comparison.
+
+The current baseline training configuration uses approximately:
+
+* 30 epochs
+* image size around 640
+* early stopping/patience
+* CUDA when available
+
+Inspect the exact existing configuration before modifying it.
+
+---
+
+# 5. ADDITIONAL MODELS
+
+Add the following models to the experiment where technically feasible:
+
+### Required
+
+1. YOLOv12
+2. YOLOv26
+3. RF-DETR
+
+RF-DETR is particularly important because the existing notebook already contains RT-DETR, and we want to compare/ensemble different detector architectures.
+
+Do not remove the existing YOLO models or RT-DETR simply to add the new models.
+
+If a requested model is unavailable, incompatible with the current Kaggle environment, or requires a different API, do not fake support.
+
+Instead:
+
+1. Explain the compatibility issue.
+2. Find the technically appropriate implementation if possible.
+3. Keep the rest of the pipeline functional.
+4. Clearly report which model could not be run and why.
+
+---
+
+# 6. OPEN-SOURCE ADDITIONAL DATASETS
+
+Investigate whether additional **open-source road-damage datasets** can be used.
+
+Potential additional data should ideally contain classes related to:
+
+* Potholes
+* Cracks
+* Manholes / open manholes
+* Other road-surface damage
+
+Do not automatically merge external datasets.
+
+First evaluate:
+
+* License
+* Class compatibility
+* Annotation format
+* Image quality
+* Dataset size
+* Duplicate/near-duplicate images
+* Geographic/environmental differences
+* Label quality
+
+If an additional dataset is used, document:
+
+* Dataset name
+* Source
+* Link
+* License
+* Number of images
+* Classes used
+* Mapping between its classes and our classes
+* How it was merged
+* Whether it was used only for training or also for validation/test
+
+IMPORTANT:
+
+Do not contaminate the existing validation/test sets with external images.
+
+If external data is added, preferably use it to increase the training set while keeping the original validation/test sets unchanged for fair comparison.
+
+---
+
+# 7. DATA QUALITY ANALYSIS
+
+Before serious training, perform a dataset audit.
+
+Check:
+
+* Missing labels
+* Invalid YOLO annotations
+* Bounding boxes outside `[0,1]`
+* Zero-area boxes
+* Extremely small boxes
+* Duplicate images
+* Class imbalance
+* Poor-quality images
+* Corrupted images
+* Incorrect class IDs
+* Images containing multiple damage types
+
+Generate a concise dataset report.
+
+Also visualize representative examples from every class.
+
+Pay special attention to:
+
+* Small cracks
+* Small potholes
+* Partially visible potholes
+* Open manholes
+* Occluded damage
+* Night/low-light images
+* Rain/wet-road images
+* Different road surfaces
+
+---
+
+# 8. DATA AUGMENTATION
+
+Experiment with suitable augmentation to improve generalization.
+
+Possible augmentations include:
+
+* Horizontal flip where appropriate
+* Rotation
+* Scaling
+* Translation
+* Random crop
+* Brightness changes
+* Contrast changes
+* HSV/color augmentation
+* Blur
+* Noise
+* Perspective transformation
+* Mosaic
+* MixUp where appropriate
+
+Do not blindly enable every augmentation.
+
+Compare baseline vs improved augmentation using the validation set.
+
+The goal is to improve:
+
+* mAP@50
+* mAP@50–95
+
+while avoiding overfitting.
+
+---
+
+# 9. HYPERPARAMETER TUNING
+
+Tune the most important training parameters.
+
+Consider:
+
+* Learning rate
+* Batch size
+* Image size
+* Number of epochs
+* Optimizer
+* Weight decay
+* Warmup
+* Scheduler
+* Augmentation strength
+* Confidence threshold
+* IoU threshold
+
+Because this is being run in Kaggle, consider GPU memory and runtime limitations.
+
+Do not run an unnecessarily huge hyperparameter search.
+
+Start with a small, controlled experiment.
+
+Every experiment should be logged with:
+
+* Model
+* Configuration
+* Epochs
+* Image size
+* Learning rate
+* Batch size
+* Augmentation configuration
+* Best epoch
+* mAP@50
+* mAP@50–95
+* Precision
+* Recall
+* Training time
+
+---
+
+# 10. PERFORMANCE TARGET
+
+The existing baseline is approximately:
+
+* mAP@50: around 75–78%
+* mAP@50–95: around 35–37%
+
+The desired target is approximately:
+
+* **mAP@50: 90%+**
+* **mAP@50–95: around 60%**
+
+Treat these as target goals, not guaranteed results.
+
+DO NOT manipulate the test set or metrics to reach the target.
+
+If 90/60 cannot realistically be achieved, report the actual results and explain the limiting factors.
+
+The primary metrics are:
+
+### mAP@50
+
+and
+
+### mAP@50–95
+
+Also report:
+
+* Precision
+* Recall
+* Per-class AP
+* Confusion matrix
+* PR curves
+
+---
+
+# 11. MODEL COMPARISON
+
+Create a single leaderboard/table containing all models.
+
+Example structure:
+
+| Model   | mAP@50 | mAP@50–95 | Precision | Recall | Training Time |
+| ------- | -----: | --------: | --------: | -----: | ------------: |
+| YOLOv8  |        |           |           |        |               |
+| YOLOv9  |        |           |           |        |               |
+| YOLOv10 |        |           |           |        |               |
+| YOLO11  |        |           |           |        |               |
+| YOLOv12 |        |           |           |        |               |
+| YOLOv26 |        |           |           |        |               |
+| RT-DETR |        |           |           |        |               |
+| RF-DETR |        |           |           |        |               |
+
+Do not enter placeholder values as actual results.
+
+Only populate results after the models have actually been evaluated.
+
+---
+
+# 12. BEST MODEL SELECTION
+
+Select the best models primarily based on validation performance.
+
+Do not automatically choose the model with the highest mAP@50 only.
+
+Consider:
+
+1. mAP@50–95
+2. mAP@50
+3. Precision
+4. Recall
+5. Per-class performance
+6. Inference speed
+7. Model size
+8. Stability across validation images
+
+The project specifically wants to explore the best YOLO model against transformer-based detectors.
+
+---
+
+# 13. ENSEMBLING
+
+Implement model ensembling after evaluating individual models.
+
+Required ensemble experiments:
+
+### Ensemble A
+
+**Best YOLO + RF-DETR**
+
+### Ensemble B
+
+**Best YOLO + RT-DETR + RF-DETR**
+
+Evaluate both ensembles using the validation set.
+
+Possible ensemble methods:
+
+* NMS
+* Weighted Box Fusion (WBF)
+
+Since either WBF or NMS is acceptable, test whichever is practical and select the better-performing approach based on validation performance.
+
+Do not claim that an ensemble improves performance unless the validation metrics demonstrate it.
+
+Compare:
+
+* Best individual YOLO
+* RF-DETR
+* RT-DETR
+* YOLO + RF-DETR
+* YOLO + RT-DETR + RF-DETR
+
+---
+
+# 14. CONFIDENCE SCORE
+
+The final prediction must show a confidence score for every detected object.
+
+Example:
+
+`Pothole — Confidence: 94.2%`
+
+or:
+
+`Crack — Confidence: 87.6%`
+
+For multiple detections, display confidence for each detection.
+
+Also make the confidence threshold configurable.
+
+For example:
+
+`conf = 0.25`
+
+should not be hardcoded everywhere.
+
+Create one central configuration variable.
+
+---
+
+# 15. DAMAGE SEVERITY — NOVELTY FEATURE
+
+The existing dataset does NOT contain severity labels.
+
+Therefore, severity should NOT be presented as a ground-truth supervised classification result.
+
+Instead, add severity as a **novelty/showcase feature**.
+
+Possible output:
+
+* Low
+* Medium
+* High
+* Critical
+
+Develop a transparent rule-based severity score using measurable detection information such as:
+
+* Damage bounding-box area
+* Relative area of damage
+* Number of damage instances
+* Damage type
+* Size of individual damage
+* Percentage of affected image/object area
+* Detection confidence
+
+Document the severity methodology clearly.
+
+For example:
+
+`Pothole | Confidence: 93% | Severity: High`
+
+The exact thresholds must be configurable and documented.
+
+Do not claim that the severity labels are scientifically validated unless a labeled severity dataset is available.
+
+---
+
+# 16. IMAGE INFERENCE
+
+Create a clean final inference function that accepts an image and returns:
+
+* Annotated image
+* Detected class
+* Bounding box
+* Confidence
+* Severity
+
+Example output:
+
+`Pothole — 93% — High`
+
+The inference code should work with the final selected model or ensemble.
+
+---
+
+# 17. VIDEO INFERENCE
+
+Support video inference.
+
+The current notebook already performs video prediction.
+
+Improve it so that:
+
+* Input video is accepted
+* Detection is performed frame-by-frame
+* Bounding boxes are displayed
+* Confidence scores are shown
+* Severity is shown where practical
+* Output video is saved
+* Output is converted to **MP4** if the generated format cannot be played properly in Kaggle/Jupyter
+
+Make the final MP4 playable in the notebook when possible.
+
+Do not break existing image inference while adding video support.
+
+---
+
+# 18. VISUALIZATION
+
+Provide useful visual comparisons.
+
+Include:
+
+* Dataset sample images
+* Ground-truth boxes
+* Class distribution
+* Training curves
+* Validation metrics
+* Confusion matrix
+* Precision-recall curves
+* Best model predictions
+* Ensemble predictions
+* Example failure cases
+
+Show examples of:
+
+* Correct detections
+* False positives
+* False negatives
+* Small/poorly detected damage
+
+This will help understand why the models perform differently.
+
+---
+
+# 19. ERROR ANALYSIS
+
+Do not focus only on mAP.
+
+Identify cases where models fail.
+
+Analyze:
+
+* Small cracks
+* Very small potholes
+* Overlapping damage
+* Occluded damage
+* Poor lighting
+* Blurry images
+* Complex road backgrounds
+* Similar-looking objects
+* False positives
+
+Use these observations to decide whether additional augmentation, training, or data is actually useful.
+
+---
+
+# 20. EXPERIMENT TRACKING
+
+Every experiment should be reproducible.
+
+Keep:
+
+* Random seed
+* Dataset configuration
+* Model name
+* Model version
+* Training parameters
+* Augmentation parameters
+* Validation metrics
+* Test metrics
+* Weight path
+
+Maintain a CSV leaderboard such as:
+
+`leaderboard.csv`
+
+Also save a final JSON report.
+
+---
+
+# 21. FINAL TEST EVALUATION
+
+IMPORTANT:
+
+Do not repeatedly use the test set during model development.
+
+Once:
+
+* Data processing is finalized
+* Models are trained
+* Hyperparameters are selected
+* Best model is selected
+* Ensemble method is selected
+
+then evaluate the final selected model/ensemble on the test set.
+
+Report:
+
+* Test mAP@50
+* Test mAP@50–95
+* Precision
+* Recall
+* Per-class metrics
+
+Clearly distinguish:
+
+`Validation Performance`
+
+from
+
+`Final Test Performance`.
+
+---
+
+# 22. ONNX EXPORT
+
+At the end of the notebook, create a final code cell that exports the required best model weights to:
+
+`.onnx`
+
+The code should:
+
+1. Identify the best selected model
+2. Load its best checkpoint
+3. Export it to ONNX
+4. Verify that the ONNX file exists
+5. Create a ZIP archive
+6. Print the final ZIP path
+
+If multiple individual models are required for the ensemble, export the necessary model weights.
+
+Example:
+
+`best_models.zip`
+
+containing:
+
+* `best_yolo.onnx`
+* `best_rtdetr.onnx`
+* `best_rfdetr.onnx`
+
+Only include models actually used in the final deployment.
+
+If an ONNX export fails for a particular architecture, report the error clearly rather than silently ignoring it.
+
+---
+
+# 23. CODE QUALITY
+
+The final notebook should be organized into clear sections:
+
+1. Environment setup
+2. Configuration
+3. Dataset discovery
+4. Dataset validation
+5. Dataset visualization
+6. Data preprocessing/augmentation
+7. Model definitions
+8. Baseline training
+9. Additional model training
+10. Hyperparameter tuning
+11. Model comparison
+12. Best model selection
+13. Ensemble
+14. Confidence scoring
+15. Severity estimation
+16. Image inference
+17. Video inference
+18. Final test evaluation
+19. ONNX export
+20. ZIP creation
+21. Final report
+
+Avoid duplicate code.
+
+Create reusable functions wherever possible.
+
+---
+
+# 24. IMPORTANT PROJECT RULES
+
+Do NOT:
+
+* Invent dataset links
+* Invent metrics
+* Claim a model improved performance without running it
+* Modify test labels
+* Tune directly against the test set
+* Delete RT-DETR
+* Remove the existing working pipeline unnecessarily
+* Add unsupported models pretending they worked
+* Claim severity prediction is supervised ML when no severity labels exist
+* Hide failed experiments
+
+If something cannot be executed because of Kaggle GPU, package, memory, model compatibility, or dependency limitations, clearly document it and provide the best practical alternative.
+
+---
+
+# 25. FINAL DELIVERABLE
+
+The final notebook should produce a complete comparison and improved road-damage detection pipeline.
+
+The final report should answer:
+
+1. Which model performed best individually?
+2. Which YOLO model performed best?
+3. How did RT-DETR perform?
+4. How did RF-DETR perform?
+5. Did YOLO + RF-DETR improve performance?
+6. Did YOLO + RT-DETR + RF-DETR improve performance?
+7. Which ensemble method performed better — NMS or WBF?
+8. What were the final validation metrics?
+9. What were the final test metrics?
+10. What caused the major detection failures?
+11. Did additional data improve performance?
+12. Did augmentation improve performance?
+13. Did hyperparameter tuning improve performance?
+14. How is confidence displayed?
+15. How is severity estimated?
+16. Which model/ensemble should be deployed?
+17. Was ONNX export successful?
+18. Was the final ZIP successfully created?
+19. Is the video output available as playable MP4?
+
+---
+
+# 26. FIRST TASK BEFORE CHANGING CODE
+
+Before implementing everything, inspect the existing notebook completely and give me a concise **Project Understanding Report** containing:
+
+### Dataset
+
+* Dataset path
+* Dataset name if identifiable
+* Dataset link if identifiable
+* Classes
+* Train images
+* Validation images
+* Test images
+* Annotation format
+* Class distribution
+
+### Existing models
+
+* Every model currently implemented
+* Model family
+* Training configuration
+
+### Existing pipeline
+
+* What each notebook section/cell currently does
+* What is already working
+* What needs modification
+* What needs to be added
+
+### Missing components
+
+Explicitly list:
+
+* Additional models
+* Data augmentation experiments
+* Hyperparameter tuning
+* Additional dataset integration
+* Ensemble
+* Confidence score
+* Severity
+* MP4 conversion
+* ONNX export/ZIP improvements
+
+Do this analysis first.
+
+Then implement the project incrementally instead of rewriting the entire notebook at once.
+
+The final goal is a **reproducible, well-documented, high-performing road-damage detection system**, not merely a notebook with many models.
